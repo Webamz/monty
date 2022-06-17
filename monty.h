@@ -37,40 +37,49 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-extern stack_t *head;
+/**
+ * struct gvar_s - container for globally used variables
+ * @file: The monty file being read
+ * @lineNum: The current line number being read
+ * @stack: The stack being used
+ * @line: The current line being read
+ */
+typedef struct gvar_s
+{
+	FILE *file;
+	unsigned int lineNum;
+	stack_t *stack;
+	char *line;
+	char isStack;
+} gvar_t;
 
-typedef void (*op_func)(stack_t **, unsigned int);
+extern gvar_t gvar;
 
-void open_file(char *);
-void read_file(FILE *);
-int len_chars(FILE *);
-int interpret_line(char *, int, int);
-void find_func(char *, char *, int, int);
-
-stack_t *create_node(int n);
-void free_nodes(void);
-void print_stack(stack_t **, unsigned int);
-void add_to_stack(stack_t **, unsigned int);
-void add_to_queue(stack_t **, unsigned int);
-
-void call_fun(op_func, char *, char *, int, int);
-void print_top(stack_t **, unsigned int);
-void pop_top(stack_t **, unsigned int);
-void nop(stack_t **, unsigned int);
-void swap_nodes(stack_t **, unsigned int);
-
-void add_nodes(stack_t **, unsigned int);
-void sub_nodes(stack_t **, unsigned int);
-void div_nodes(stack_t **, unsigned int);
-void mul_nodes(stack_t **, unsigned int);
-void mod_nodes(stack_t **, unsigned int);
-void print_char(stack_t **, unsigned int);
-void print_str(stack_t **, unsigned int);
-void rotl(stack_t **, unsigned int);
-
-void err(int error_code, ...);
-void more_err(int error_code, ...);
-void string_err(int error_code, ...);
-void rotr(stack_t **, unsigned int);
+void _printerr(char *c);
+void openfile(char *name);
+void process(void);
+void push(char *num);
+void pall(stack_t **stack, unsigned int lineNum);
+void runopcode(char *opcode, unsigned int lineNum);
+void cleanup(void);
+void checkNum(char *str);
+void pint(stack_t **stack, unsigned int lineNum);
+void pop(stack_t **stack, unsigned int lineNum);
+void swap(stack_t **stack, unsigned int l);
+void pushInt(int n);
+void add(stack_t **stack, unsigned int l);
+void nop(stack_t **stack, unsigned int l);
+void pchar(stack_t **stack, unsigned int l);
+void sub(stack_t **stack, unsigned int l);
+void divide(stack_t **stack, unsigned int l);
+void mul(stack_t **stack, unsigned int l);
+void mod(stack_t **stack, unsigned int l);
+void rotl(stack_t **stack, unsigned int l);
+void pstr(stack_t **stack, unsigned int l);
+void to_stack(stack_t **stack, unsigned int l);
+void to_queue(stack_t **stack, unsigned int l);
+int getTop();
+int getSecond();
+void rotr(stack_t **stack, unsigned int l);
 
 #endif
